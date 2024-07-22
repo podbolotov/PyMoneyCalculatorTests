@@ -1,0 +1,7 @@
+.idea
+allure-report
+allure-results
+venv
+
+app-debug.apk
+debug.py
