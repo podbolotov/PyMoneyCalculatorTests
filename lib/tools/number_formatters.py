@@ -4,36 +4,7 @@ import decimal
 class NumberFormatters:
 
     @staticmethod
-    def format_amount_old(amount: str) -> str:
-        """
-
-        :param amount:
-        :return:
-        """
-
-        number_to_string = str(amount)
-        amount_without_rub_currency_symbol = number_to_string.replace('₽', '')
-        amount_without_spaces = amount_without_rub_currency_symbol.replace(' ', '')
-
-        try:
-            int_number = int(f'{float(amount_without_spaces):g}')
-            if isinstance(int_number, int):
-                amount_without_spaces = str(int_number)
-                number_is_int = True
-            else:
-                number_is_int = False
-        except ValueError:
-            number_is_int = False
-
-        if number_is_int:
-            result = amount_without_spaces
-        else:
-            result = "{:.2f}".format(float(amount_without_spaces))
-
-        return result
-
-    @staticmethod
-    def format_amount(amount: str) -> str:
+    def format_amount(amount: str | int) -> str:
         """
 
         :param amount:
@@ -58,8 +29,6 @@ class NumberFormatters:
             result = "{:.2f}".format(float(value_string))
 
         return result
-
-
 
     @staticmethod
     def format_count(count: str | int):

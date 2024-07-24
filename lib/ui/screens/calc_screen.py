@@ -2,7 +2,6 @@ import re
 import time
 import random
 
-
 from appium.webdriver.common.appiumby import AppiumBy
 from lib.tools.element_finders import find_by_locator
 from lib.data.banknotes_data import BanknotesData
@@ -105,15 +104,15 @@ class CalcScreenLocators:
     class DigitButton1():
         type = AppiumBy.XPATH
         value = '//android.view.View[@resource-id="CalculatorUiCalculatorKeyboardDigitButton1"]'
-        
+
     class DigitButton2:
         type = AppiumBy.XPATH
         value = '//android.view.View[@resource-id="CalculatorUiCalculatorKeyboardDigitButton2"]'
-        
+
     class DigitButton3:
         type = AppiumBy.XPATH
         value = '//android.view.View[@resource-id="CalculatorUiCalculatorKeyboardDigitButton3"]'
-        
+
     class DigitButton4:
         type = AppiumBy.XPATH
         value = '//android.view.View[@resource-id="CalculatorUiCalculatorKeyboardDigitButton4"]'
@@ -210,7 +209,6 @@ class CalcScreenOperations:
     def enter_number_by_digit_buttons(self, number: int):
         string_number = str(number)
         for symbol in string_number:
-
             locator_class = getattr(CalcScreenLocators, "DigitButton" + symbol)
 
             digit_button = self.driver.find_element(
@@ -220,7 +218,7 @@ class CalcScreenOperations:
 
             digit_button.click()
 
-            time.sleep(0.5)
+            time.sleep(0.1)
 
     def find_card_inner_element(self, locator, element_type: str = "Name"):
         """
@@ -248,7 +246,10 @@ class CalcScreenOperations:
         return inner_element
 
     @staticmethod
-    def get_all_banknotes_and_coins_locators():
+    def get_all_banknotes_and_coins_locator_classes_names() -> list[str]:
+        """
+        Данный метод возвращает массив с именами всех классов-локаторов банкнот и монет.
+        """
         all_locators = dir(CalcScreenLocators)
         print(f"All attributes ({len(all_locators)}): {all_locators}")
 
@@ -256,8 +257,11 @@ class CalcScreenOperations:
 
         for locator in all_locators:
             if re.match(r'^(Card)\d{1,4}((Kop)|(Rub))$', locator):
-                # print(print(f" + Аттрибут {locator} соответствует паттерну."))
                 cards_locators.append(locator)
+
+        cards_locators = sorted(cards_locators,
+                                key=lambda card: getattr(CalcScreenLocators, card).data.index,
+                                reverse=False)
 
         print(f"Card locators attributes ({len(cards_locators)}): {cards_locators}")
 
@@ -269,12 +273,25 @@ class CalcScreenOperations:
         Метод возвращает локатор случайной банкноты или монеты.
         :return:
         """
-
-        cards_locators = CalcScreenOperations.get_all_banknotes_and_coins_locators()
+        cards_locators = CalcScreenOperations.get_all_banknotes_and_coins_locator_classes_names()
         random_card_name = random.choice(cards_locators)
 
         card = getattr(CalcScreenLocators, random_card_name)
         print(f"\nRandom card name: {random_card_name}\n"
+              f"Card locator type: {card.type}\n"
+              f"Card locator value: {card.value}")
+
+        return card
+
+    @staticmethod
+    def get_banknote_or_coin_locator_by_name(card_name: str):
+        """
+        Метод возвращает локатор банкноты или монеты по имени её класса-локатора.
+        :return:
+        """
+
+        card = getattr(CalcScreenLocators, card_name)
+        print(f"\nRequested card name: {card_name}\n"
               f"Card locator type: {card.type}\n"
               f"Card locator value: {card.value}")
 
@@ -288,4 +305,3 @@ class CalcScreenOperations:
         """
         count = random.randint(1, 99999)
         return count
-
