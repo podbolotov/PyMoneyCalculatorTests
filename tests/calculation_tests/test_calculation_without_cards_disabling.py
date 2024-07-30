@@ -11,9 +11,7 @@ from lib.tools.screenshotter import make_and_attach_screenshot
 class TestCalculationWithoutNominalsDeactivation:
     @allure.title("Вычисление суммы одной случайной карточки")
     @allure.severity(severity_level="NORMAL")
-    def test_one_random_card_calculation(self, appium_driver, reset_calculations_after_test):
-        # Инициализируем операции экрана, пробрасываем драйвер.
-        calc_screen = CalcScreenOperations(appium_driver)
+    def test_one_random_card_calculation(self, appium_driver, calc_screen, reset_calculations_after_test):
 
         # Выбираем случайный локатор карточки банкноты или монеты
         random_card_locator = calc_screen.get_random_banknote_or_coin_locator()
@@ -130,9 +128,7 @@ class TestCalculationWithoutNominalsDeactivation:
 
     @allure.title("Вычисление максимально возможной суммы")
     @allure.severity(severity_level="NORMAL")
-    def test_maximal_amount_calculation(self, appium_driver, reset_calculations_after_test):
-        # Инициализируем операции экрана, пробрасываем драйвер.
-        calc_screen = CalcScreenOperations(appium_driver)
+    def test_maximal_amount_calculation(self, appium_driver, calc_screen, reset_calculations_after_test):
 
         # Получаем имена всех классов-локаторов карточек с банкнотами и монетами.
         all_cards_locators_names = calc_screen.get_all_banknotes_and_coins_locator_classes_names()

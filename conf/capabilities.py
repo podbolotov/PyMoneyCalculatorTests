@@ -5,7 +5,7 @@ from appium.options.android import UiAutomator2Options
 class ApplicationCapabilities:
     @staticmethod
     def get():
-        application_path = '/home/maxim/Projects/PyMoneyCalculatorTests/app-debug.apk'
+        application_path = os.environ.get("APP_PATH") or os.path.realpath("./app-debug.apk")
         application_capabilities = dict(
             platformName='Android',
             automationName='uiautomator2',

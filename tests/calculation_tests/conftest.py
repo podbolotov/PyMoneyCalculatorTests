@@ -1,8 +1,21 @@
 import time
 import pytest
 from selenium.webdriver import ActionChains
-from lib.ui.screens.calc_screen import CalcScreenLocators
+from lib.ui.screens.calc_screen import CalcScreenLocators, CalcScreenOperations
 from lib.tools.element_finders import find_by_locator
+
+
+@pytest.fixture(scope="function")
+def calc_screen(appium_driver) -> CalcScreenOperations:
+    """
+    Данная фикстура инициализирует класс операций экрана "Калькулятор"
+    и предоставляет доступ к его методам.
+
+    :param appium_driver: Фикстура, предоставляющая драйвер.
+    :return: Класс операций экрана "Калькулятор"
+    """
+    calc_screen = CalcScreenOperations(appium_driver)
+    yield calc_screen
 
 
 @pytest.fixture(scope="function")
